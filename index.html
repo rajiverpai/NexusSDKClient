@@ -74,11 +74,9 @@
                             <ul class="nav side-menu">
                                 <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
-                                        <li><a href="index.html">Dashboard</a>
+                                        <li><a href="index.html">Rest Test Settings</a>
                                         </li>
-                                        <li><a href="index2.html">Dashboard2</a>
-                                        </li>
-                                        <li><a href="index3.html">Dashboard3</a>
+                                        <li><a href="https://github.com/support-dot-com/support-dot-com.github.io/blob/v37/nexusconnectsdkjavascript.md" target="_blank">Read API Documentation</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -263,16 +261,16 @@
                                 <div class="x_content">
                                     <br /> <br />
                                     <form class="form-horizontal form-label-left input_mask">
-                                        <textarea class="resizable_textarea form-control" style="width: 100%; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 74px;" data-autosize-on="true" placeholder="Enter your own JWT if you need to..."></textarea>
+                                        <textarea id="jwtarea" class="resizable_textarea form-control" style="width: 100%; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 74px;" data-autosize-on="true" placeholder="Enter your own JWT if you need to..."></textarea>
 
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" class="flat" checked="checked"> Preserve Context
+                                                <input type="checkbox" class="flat" checked="checked" id="chkPreserveContext"> Preserve Context
                                             </label>
                                         </div>
                                         <div class="form-group">
                                             <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                                <button type="button" class="btn btn-success pull-right">Submit</button>
+                                                <button type="button" class="btn btn-success pull-right" onclick="initSDK()">Submit</button>
                                             </div>
                                         </div>
 
@@ -359,7 +357,7 @@
     <!-- Sctipts for SDK -->
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
-    <script type="text/javascript" src="https://static.hkg.firebet.dev.support.com/client/v1/nexus-connect-sdk.js"></script>
+    <script type="text/javascript" src="https://static.nexus.support.com/client/v1/nexus-connect-sdk.js"></script>
 
     <!-- PNotify -->
     <script type="text/javascript" src="js/notify/pnotify.core.js"></script>
@@ -367,9 +365,13 @@
     <script type="text/javascript" src="js/notify/pnotify.nonblock.js"></script>
     <script>
         function initSDK(){
-            var JWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0IjoibXljb21wYW55IiwiZCI6ImhrZy5maXJlYmV0LmRldi5zdXBwb3J0LmNvbSIsInBybSI6WyJsb2c6KiIsInNlc3Npb246Y29ubmVjdCJdLCJqdGkiOiJhYWU0NjVjZC0wMmMwLTQwZjYtOTIzZi0zZDBhYTNjYmM3MTAiLCJhcHAiOiJSYXNiZXJyeVBpIiwidmVyIjoiMS4wIiwicGx0IjoiUmFzYmVycnlQaSIsImlhdCI6MTQ0MDQ0MDI1NCwiYXVkIjpbImFwcCIsImFwaSJdLCJpc3MiOiJTdXBwb3J0LmNvbSJ9.zeStYRk4icttenyEYn0KSWCpSOw30frvV3rLS0bd18I';
-            NexusConnectSDK.initialize(JWT);
-            NexusConnectSDK.preserveContext(true);
+            var defaultJWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0IjoibXljb21wYW55IiwiZCI6Im5leHVzLnN1cHBvcnQuY29tIiwicHJtIjpbImxvZzoqIiwic2Vzc2lvbjpjb25uZWN0Il0sImp0aSI6IjQzY2JmNWEyLWQ1ZjAtNDcwNC1iOTE3LWQzYTM2YmE1YjhkMCIsImFwcCI6IlBpIiwidmVyIjoiUGkiLCJwbHQiOiJSYWJQaSIsImlhdCI6MTQ0MDQ1ODQ4NywiYXVkIjpbImFwcCIsImFwaSJdLCJpc3MiOiJTdXBwb3J0LmNvbSJ9.4djguCZWXkXibo1aWrHAScjKBWiv2br1S_OQSrDxC1g';
+            var txtJWT = document.getElementById('jwtarea').value;
+            jwt = txtJWT||defaultJWT;
+            NexusConnectSDK.initialize(jwt);
+            var preserveContext = document.getElementById('chkPreserveContext').checked;
+
+            NexusConnectSDK.preserveContext(preserveContext);
             var fname = 'SDKTestFname' + Math.floor(Math.random()*10000);
             var lname = 'SDKTestLname' + Math.floor(Math.random()*10000);
             var email = 'sdktest@' + Math.floor*(Math.random()*10000) + '.com';
@@ -438,7 +440,7 @@
             var externalId = document.getElementById('txtExternalId');
 
             /* Clear the existing Identity and set the new Identity for subsequent calls?" */
-            NexusConnectSDK.clearIdentity()
+            NexusConnectSDK.clearIdentity();
             NexusConnectSDK
                     .setFirstName(fname)
                     .setLastName(lname)
