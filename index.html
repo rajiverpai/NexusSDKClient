@@ -405,10 +405,19 @@
         function initateAssistedHelp()
         {
             var element = document.getElementById('nxlive');
-            var isHelpActive = NexusConnectSDK.isLiveHelpActive(element);
-            if(!isHelpActive){
-                NexusConnectSDK.showLiveHelp(document.getElementById('nxlive'),{'phone':'(408)-830-7906', 'skill':'Sales'});
+            try{
+
+                var isHelpActive = NexusConnectSDK.isLiveHelpActive(element);
+
+            }catch(ex){
+                console.error(ex);
             }
+            finally{
+                if(!isHelpActive){
+                    NexusConnectSDK.showLiveHelp(document.getElementById('nxlive'),{'phone':'(408)-830-7906', 'skill':'Sales'});
+                }
+            }
+
         }
     </script>
     <script>
