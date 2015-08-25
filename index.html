@@ -261,13 +261,18 @@
                                 <div class="x_content">
                                     <br /> <br />
                                     <form class="form-horizontal form-label-left input_mask">
+                                        <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
+                                            <input type="text" class="form-control has-feedback-left" id="sdkurl" placeholder="SDK URL - ex: hkg.firebet.dev.support.com(default: nexus.support.com)">
+                                            <span class="fa fa-anchor form-control-feedback left" aria-hidden="true"></span>
+                                        </div>
+                                        <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
                                         <textarea id="jwtarea" class="resizable_textarea form-control" style="width: 100%; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 74px;" data-autosize-on="true" placeholder="Enter your own JWT if you need to..."></textarea>
+                                        </div>
 
-                                        <div class="checkbox">
                                             <label>
                                                 <input type="checkbox" class="flat" checked="checked" id="chkPreserveContext"> Preserve Context
                                             </label>
-                                        </div>
+
                                         <div class="form-group">
                                             <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                                                 <button type="button" class="btn btn-success pull-right" onclick="initSDK()">Submit</button>
@@ -357,45 +362,88 @@
     <!-- Sctipts for SDK -->
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
-    <script type="text/javascript" src="https://static.nexus.support.com/client/v1/nexus-connect-sdk.js"></script>
+    <!--<script type="text/javascript" src="https://static.nexus.support.com/client/v1/nexus-connect-sdk.js"></script>-->
 
     <!-- PNotify -->
     <script type="text/javascript" src="js/notify/pnotify.core.js"></script>
     <script type="text/javascript" src="js/notify/pnotify.buttons.js"></script>
     <script type="text/javascript" src="js/notify/pnotify.nonblock.js"></script>
+
     <script>
         function initSDK(){
-            var defaultJWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0IjoibXljb21wYW55IiwiZCI6Im5leHVzLnN1cHBvcnQuY29tIiwicHJtIjpbImxvZzoqIiwic2Vzc2lvbjpjb25uZWN0Il0sImp0aSI6IjQzY2JmNWEyLWQ1ZjAtNDcwNC1iOTE3LWQzYTM2YmE1YjhkMCIsImFwcCI6IlBpIiwidmVyIjoiUGkiLCJwbHQiOiJSYWJQaSIsImlhdCI6MTQ0MDQ1ODQ4NywiYXVkIjpbImFwcCIsImFwaSJdLCJpc3MiOiJTdXBwb3J0LmNvbSJ9.4djguCZWXkXibo1aWrHAScjKBWiv2br1S_OQSrDxC1g';
-            var txtJWT = document.getElementById('jwtarea').value;
-            jwt = txtJWT||defaultJWT;
-            NexusConnectSDK.initialize(jwt);
-            var preserveContext = document.getElementById('chkPreserveContext').checked;
 
-            NexusConnectSDK.preserveContext(preserveContext);
-            var fname = 'SDKTestFname' + Math.floor(Math.random()*10000);
-            var lname = 'SDKTestLname' + Math.floor(Math.random()*10000);
-            var email = 'sdktest@' + Math.floor*(Math.random()*10000) + '.com';
-            var phone = Math.floor(Math.random()*10000000000);
-            var externalId = Math.floor((Math.random() * 10000));
-            new PNotify({
-                title: 'Nexus SDK',
-                text: 'Successfully Authenticated. Context is preserved',
-                type: 'success',
-                nonblock: {
-                    nonblock: true,
-                    nonblock_opacity: .2
-                }
-            });
-            NexusConnectSDK.setEmail(email).setFirstName(fname).setLastName(lname).setPhone(phone).setExternalId(externalId);
-            new PNotify({
-                title: 'Nexus SDK',
-                text: 'Customer Information is updated.',
-                type: 'success',
-                nonblock: {
-                    nonblock: true,
-                    nonblock_opacity: .2
-                }
-            });
+            var customURL = document.getElementById('sdkurl').value;
+            var url = 'https://static.nexus.support.com/client/v1/nexus-connect-sdk.js';
+            if(customURL){
+                url = 'https://static.' + customURL +  '/client/v1/nexus-connect-sdk.js';
+            }
+            console.log(url);
+            try{
+                $.getScript(url, function(data, textStatus, jqxhr) {
+
+                    if(jqxhr.status != 200){
+
+                        new PNotify({
+                            title: 'Nexus SDK',
+                            text: 'Sorry! SDK Failed to Load from Given URL',
+                            type: 'error',
+                            nonblock: {
+                                nonblock: true,
+                                nonblock_opacity: .2
+                            }
+                        });
+                        return;
+                    }
+                    else
+                    {
+                        console.log("SDK Loaded from " + url);
+                        var defaultJWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0IjoibXljb21wYW55IiwiZCI6Im5leHVzLnN1cHBvcnQuY29tIiwicHJtIjpbImxvZzoqIiwic2Vzc2lvbjpjb25uZWN0Il0sImp0aSI6IjQzY2JmNWEyLWQ1ZjAtNDcwNC1iOTE3LWQzYTM2YmE1YjhkMCIsImFwcCI6IlBpIiwidmVyIjoiUGkiLCJwbHQiOiJSYWJQaSIsImlhdCI6MTQ0MDQ1ODQ4NywiYXVkIjpbImFwcCIsImFwaSJdLCJpc3MiOiJTdXBwb3J0LmNvbSJ9.4djguCZWXkXibo1aWrHAScjKBWiv2br1S_OQSrDxC1g';
+                        var txtJWT = document.getElementById('jwtarea').value;
+                        jwt = txtJWT||defaultJWT;
+                        NexusConnectSDK.initialize(jwt);
+                        var preserveContext = document.getElementById('chkPreserveContext').checked;
+
+                        NexusConnectSDK.preserveContext(preserveContext);
+                        var fname = 'SDKTestFname' + Math.floor(Math.random()*10000);
+                        var lname = 'SDKTestLname' + Math.floor(Math.random()*10000);
+                        var email = 'sdktest@' + Math.floor*(Math.random()*10000) + '.com';
+                        var phone = Math.floor(Math.random()*10000000000);
+                        var externalId = Math.floor((Math.random() * 10000));
+                        new PNotify({
+                            title: 'Nexus SDK',
+                            text: 'Successfully Authenticated. Context is preserved',
+                            type: 'success',
+                            nonblock: {
+                                nonblock: true,
+                                nonblock_opacity: .2
+                            }
+                        });
+                        NexusConnectSDK.setEmail(email).setFirstName(fname).setLastName(lname).setPhone(phone).setExternalId(externalId);
+                        new PNotify({
+                            title: 'Nexus SDK',
+                            text: 'Customer Information is updated.',
+                            type: 'success',
+                            nonblock: {
+                                nonblock: true,
+                                nonblock_opacity: .2
+                            }
+                        });
+                    }
+
+                });
+
+            }catch(ex){
+                new PNotify({
+                    title: 'Nexus SDK',
+                    text: 'Sorry! SDK Failed to Load from Given URL. Reason: ' + ex,
+                    type: 'error',
+                    nonblock: {
+                        nonblock: true,
+                        nonblock_opacity: .2
+                    }
+                });
+            }
+
 
 
         }
