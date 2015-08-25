@@ -402,7 +402,7 @@
                         jwt = txtJWT||defaultJWT;
                         NexusConnectSDK.initialize(jwt);
                         var preserveContext = document.getElementById('chkPreserveContext').checked;
-
+                        console.log("Is context preserved?" + preserveContext);
                         NexusConnectSDK.preserveContext(preserveContext);
                         var fname = 'SDKTestFname' + Math.floor(Math.random()*10000);
                         var lname = 'SDKTestLname' + Math.floor(Math.random()*10000);
