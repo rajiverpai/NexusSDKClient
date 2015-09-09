@@ -142,16 +142,16 @@
 
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
-                                <a href="javascript:initateAssistedHelp();" class="user-profile" data-toggle="modal" aria-expanded="false" data-target=".bs-example-modal-sm">
-                                    <img src="images/img.jpg" alt="" onclick="initateAssistedHelp()">
-                                    <span class=" fa fa-angle-down"></span>
-
+                                <a href="" class="user-profile" data-toggle="modal" aria-expanded="false" data-target=".bs-example-modal-sm">
+                                    <i class="fa fa-comments-o" onclick="initateAssistedHelp()">Assist</i>
                                 </a>
 
                             </li>
-
-
-
+                            <li class="">
+                                <a href="" class="user-profile" data-toggle="modal" aria-expanded="false" data-target=".bs-example-modal-sm">
+                                    <i class="fa fa-newspaper-o" onclick="showContext()">Context</i>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -385,6 +385,8 @@
     <script>
         function initSDK(){
 
+            console.log("clearing local storage");
+            localStorage.clear();
             var txtJWT = document.getElementById('jwtarea').value;
             var defaultJWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0IjoibXljb21wYW55IiwiZCI6Im5leHVzLnN1cHBvcnQuY29tIiwicHJtIjpbImxvZzoqIiwic2Vzc2lvbjpjb25uZWN0Il0sImp0aSI6IjQzY2JmNWEyLWQ1ZjAtNDcwNC1iOTE3LWQzYTM2YmE1YjhkMCIsImFwcCI6IlBpIiwidmVyIjoiUGkiLCJwbHQiOiJSYWJQaSIsImlhdCI6MTQ0MDQ1ODQ4NywiYXVkIjpbImFwcCIsImFwaSJdLCJpc3MiOiJTdXBwb3J0LmNvbSJ9.4djguCZWXkXibo1aWrHAScjKBWiv2br1S_OQSrDxC1g';
             jwt = txtJWT||defaultJWT;
@@ -429,30 +431,23 @@
                         var preserveContext = document.getElementById('chkPreserveContext').checked;
                         console.log("Is context preserved?" + preserveContext);
                         NexusConnectSDK.preserveContext(preserveContext);
+                        if(!preserveContext){
+                            NexusConnectSDK.logAction('Context Preserve turned off');
+                        }
+                        else{
+                            NexusConnectSDK.logAction('Context Preserve turned On');
+                        }
                         var fname = 'SDKTestFname' + Math.floor(Math.random()*10000);
                         var lname = 'SDKTestLname' + Math.floor(Math.random()*10000);
                         var email = 'sdktest@' + Math.floor*(Math.random()*10000) + '.com';
                         var phone = Math.floor(Math.random()*10000000000);
                         var externalId = Math.floor((Math.random() * 10000));
-//                        new PNotify({
-//                            title: 'Nexus SDK',
-//                            text: 'Successfully Authenticated. Context is preserved',
-//                            type: 'success',
-//                            nonblock: {
-//                                nonblock: true,
-//                                nonblock_opacity: .2
-//                            }
-//                        });
+
                         NexusConnectSDK.setEmail(email).setFirstName(fname).setLastName(lname).setPhone(phone).setExternalId(externalId);
-//                        new PNotify({
-//                            title: 'Nexus SDK',
-//                            text: 'Customer Information is updated.',
-//                            type: 'success',
-//                            nonblock: {
-//                                nonblock: true,
-//                                nonblock_opacity: .2
-//                            }
-//                        });
+                        var identity = JSON.stringify(JSON.parse(localStorage.getItem('nexus-connect-data')).context.identity);
+                        console.log("Customer Data" + identity);
+                        NexusConnectSDK.logContent("Customer Identity",identity);
+
                     }
 
                 });
@@ -475,6 +470,15 @@
 
     </script>
     <script>
+        function showContext(){
+
+            var localData = JSON.parse(localStorage.getItem('nexus-connect-data'));
+            var helpmeId = document.getElementById('nxlive');
+            helpmeId.innerHTML = (JSON.stringify(localData.context.log));
+        }
+
+    </script>
+    <script>
         function initateAssistedHelp()
         {
             var element = document.getElementById('nxlive');
@@ -482,12 +486,18 @@
 
                 var isHelpActive = NexusConnectSDK.isLiveHelpActive(element);
 
+
             }catch(ex){
                 console.error(ex);
             }
             finally{
                 if(!isHelpActive){
                     NexusConnectSDK.showLiveHelp(document.getElementById('nxlive'),{'phone':'(408)-830-7906', 'skill':'Sales'});
+                    NexusConnectSDK.logAction("Customer Opted for Assisted Help");
+                    NexusConnectSDK.logDevice("Connected Device", "Website");
+                }
+                else{
+                    NexusConnectSDK.logAction("Customer Opted for Assisted Help - But Was already active");
                 }
             }
 
@@ -499,6 +509,8 @@
 
             var helpmeId = document.getElementById('helpContainer');
             NexusConnectSDK.showSelfHelpForId(helpid,helpmeId);
+
+
 
         }
 
