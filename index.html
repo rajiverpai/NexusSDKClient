@@ -20,7 +20,7 @@
     <!-- Custom styling plus plugins -->
     <link href="css/custom.css" rel="stylesheet">
     <link href="css/icheck/flat/green.css" rel="stylesheet">
-
+    
 
     <script src="js/jquery.min.js"></script>
 
@@ -33,6 +33,12 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+
+
+
+    <script language="JavaScript" type="text/javascript" src="http://kjur.github.io/jsrsasign/jsrsasign-latest-all-min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/json-sans-eval-min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="jws-3.2.js"></script>
 
 </head>
 
@@ -136,8 +142,8 @@
 
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
-                                <a href="javascript:;" class="user-profile" data-toggle="modal" aria-expanded="false" data-target=".bs-example-modal-sm">
-                                    <img src="images/img.jpg" alt="" onclick="initateAssistedHelp()">Assist Me
+                                <a href="javascript:initateAssistedHelp();" class="user-profile" data-toggle="modal" aria-expanded="false" data-target=".bs-example-modal-sm">
+                                    <img src="images/img.jpg" alt="" onclick="initateAssistedHelp()">
                                     <span class=" fa fa-angle-down"></span>
 
                                 </a>
@@ -162,7 +168,7 @@
                         </div>
 
                         <div class="title_right">
-                            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                            <div class="col-md-3 col-sm-5 col-xs-12 form-group pull-right top_search">
                                 <div class="input-group">
                                     <input type="text"  id="helpid" class="form-control" placeholder="Search HelpId...">
                                     <span class="input-group-btn">
@@ -170,11 +176,19 @@
                         </span>
                                 </div>
                             </div>
-                            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                            <div class="col-md-3 col-sm-5 col-xs-12 form-group pull-right top_search">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search Tags..." id="tags">
+                                    <input type="text" class="form-control" placeholder="Search Tags.." id="tags">
                                     <span class="input-group-btn">
                             <button class="btn btn-default" type="button" onclick="getHelpByTags(document.getElementById('tags').value.split(','))">Go!</button>
+                            </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-5 col-xs-12 form-group pull-right top_search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search anything.." id="text">
+                                    <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" onclick="searchHelp(document.getElementById('text').value.split(' '))">Go!</button>
                             </span>
                                 </div>
                             </div>
@@ -262,8 +276,7 @@
                                     <br /> <br />
                                     <form class="form-horizontal form-label-left input_mask">
                                         <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
-                                            <input type="text" class="form-control has-feedback-left" id="sdkurl" placeholder="SDK URL - ex: hkg.firebet.dev.support.com(default: nexus.support.com)">
-                                            <span class="fa fa-anchor form-control-feedback left" aria-hidden="true"></span>
+                                            <label class="control-label" id="server"></label>
                                         </div>
                                         <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
                                         <textarea id="jwtarea" class="resizable_textarea form-control" style="width: 100%; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 74px;" data-autosize-on="true" placeholder="Enter your own JWT if you need to...[Default: mycompany - production JWT is used]"></textarea>
@@ -372,12 +385,26 @@
     <script>
         function initSDK(){
 
-            var customURL = document.getElementById('sdkurl').value;
-            var url = 'https://static.nexus.support.com/client/v1/nexus-connect-sdk.js';
-            if(customURL){
-                url = 'https://static.' + customURL +  '/client/v1/nexus-connect-sdk.js';
+            var txtJWT = document.getElementById('jwtarea').value;
+            var defaultJWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0IjoibXljb21wYW55IiwiZCI6Im5leHVzLnN1cHBvcnQuY29tIiwicHJtIjpbImxvZzoqIiwic2Vzc2lvbjpjb25uZWN0Il0sImp0aSI6IjQzY2JmNWEyLWQ1ZjAtNDcwNC1iOTE3LWQzYTM2YmE1YjhkMCIsImFwcCI6IlBpIiwidmVyIjoiUGkiLCJwbHQiOiJSYWJQaSIsImlhdCI6MTQ0MDQ1ODQ4NywiYXVkIjpbImFwcCIsImFwaSJdLCJpc3MiOiJTdXBwb3J0LmNvbSJ9.4djguCZWXkXibo1aWrHAScjKBWiv2br1S_OQSrDxC1g';
+            jwt = txtJWT||defaultJWT;
+            var parsedJWT;
+            var tenant="";
+            var jws = new KJUR.jws.JWS();
+            try{
+                var result  = jws.parseJWS(jwt);
+                parsedJWT = JSON.parse(jws.parsedJWS.payloadS);
+            }catch(ex){
+
+                console.error(ex);
+            }finally{
+
+                var myURL = parsedJWT.d;
+                tenant = parsedJWT.t;
+
             }
-            console.log(url);
+                url = 'https://static.' + myURL +  '/client/v1/nexus-connect-sdk.js';
+                //alert(url);
             try{
                 $.getScript(url, function(data, textStatus, jqxhr) {
 
@@ -397,9 +424,7 @@
                     else
                     {
                         console.log("SDK Loaded from " + url);
-                        var defaultJWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0IjoibXljb21wYW55IiwiZCI6Im5leHVzLnN1cHBvcnQuY29tIiwicHJtIjpbImxvZzoqIiwic2Vzc2lvbjpjb25uZWN0Il0sImp0aSI6IjQzY2JmNWEyLWQ1ZjAtNDcwNC1iOTE3LWQzYTM2YmE1YjhkMCIsImFwcCI6IlBpIiwidmVyIjoiUGkiLCJwbHQiOiJSYWJQaSIsImlhdCI6MTQ0MDQ1ODQ4NywiYXVkIjpbImFwcCIsImFwaSJdLCJpc3MiOiJTdXBwb3J0LmNvbSJ9.4djguCZWXkXibo1aWrHAScjKBWiv2br1S_OQSrDxC1g';
-                        var txtJWT = document.getElementById('jwtarea').value;
-                        jwt = txtJWT||defaultJWT;
+                        document.getElementById('server').innerHTML = 'URL: ' + tenant +'.'+ myURL;
                         NexusConnectSDK.initialize(jwt);
                         var preserveContext = document.getElementById('chkPreserveContext').checked;
                         console.log("Is context preserved?" + preserveContext);
@@ -409,25 +434,25 @@
                         var email = 'sdktest@' + Math.floor*(Math.random()*10000) + '.com';
                         var phone = Math.floor(Math.random()*10000000000);
                         var externalId = Math.floor((Math.random() * 10000));
-                        new PNotify({
-                            title: 'Nexus SDK',
-                            text: 'Successfully Authenticated. Context is preserved',
-                            type: 'success',
-                            nonblock: {
-                                nonblock: true,
-                                nonblock_opacity: .2
-                            }
-                        });
+//                        new PNotify({
+//                            title: 'Nexus SDK',
+//                            text: 'Successfully Authenticated. Context is preserved',
+//                            type: 'success',
+//                            nonblock: {
+//                                nonblock: true,
+//                                nonblock_opacity: .2
+//                            }
+//                        });
                         NexusConnectSDK.setEmail(email).setFirstName(fname).setLastName(lname).setPhone(phone).setExternalId(externalId);
-                        new PNotify({
-                            title: 'Nexus SDK',
-                            text: 'Customer Information is updated.',
-                            type: 'success',
-                            nonblock: {
-                                nonblock: true,
-                                nonblock_opacity: .2
-                            }
-                        });
+//                        new PNotify({
+//                            title: 'Nexus SDK',
+//                            text: 'Customer Information is updated.',
+//                            type: 'success',
+//                            nonblock: {
+//                                nonblock: true,
+//                                nonblock_opacity: .2
+//                            }
+//                        });
                     }
 
                 });
@@ -484,6 +509,14 @@
 
             var helpmeId = document.getElementById('helpContainer');
             NexusConnectSDK.showSelfHelpForTags(tags,helpmeId);
+
+        }
+
+    </script>
+    <script type="application/javascript">
+        function searchHelp(text){
+            var helpmeId = document.getElementById('helpContainer');
+            NexusConnectSDK.showSelfHelpForSearch(text,helpmeId);
 
         }
 
