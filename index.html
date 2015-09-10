@@ -81,10 +81,6 @@
                                 <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
                                         <li><a href="index.html">Rest Test Settings</a>
-<<<<<<< HEAD
-
-=======
->>>>>>> 180e3331d7ad9edc9051f109db1e855e93e34f2c
                                         </li>
                                         <li><a href="https://github.com/support-dot-com/support-dot-com.github.io/blob/v37/nexusconnectsdkjavascript.md" target="_blank">Read API Documentation</a>
                                         </li>
@@ -496,13 +492,11 @@
             }
             finally{
                 if(!isHelpActive){
-<<<<<<< HEAD
+
                     var helpPanel = document.getElementById('nxlive');
                     helpPanel.innerHTML = "";
                     NexusConnectSDK.showLiveHelp(helpPanel,{'phone':'(408)-830-7906', 'skill':'Sales'});
-=======
                     NexusConnectSDK.showLiveHelp(document.getElementById('nxlive'),{'phone':'(408)-830-7906', 'skill':'Sales'});
->>>>>>> 180e3331d7ad9edc9051f109db1e855e93e34f2c
                     NexusConnectSDK.logAction("Customer Opted for Assisted Help");
                     NexusConnectSDK.logDevice("Connected Device", "Website");
                 }
