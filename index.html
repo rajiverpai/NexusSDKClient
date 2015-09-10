@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Nexus SDK Test Client</title>
+
+    <!-- Bootstrap core CSS -->
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="fonts/css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+
+    <!-- Custom styling plus plugins -->
+    <link href="css/custom.css" rel="stylesheet">
+    <link href="css/icheck/flat/green.css" rel="stylesheet">
+    
+
+    <script src="js/jquery.min.js"></script>
+
+    <!--[if lt IE 9]>
+        <script src="../assets/js/ie8-responsive-file-warning.js"></script>
+        <![endif]-->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+    <script language="JavaScript" type="text/javascript" src="http://kjur.github.io/jsrsasign/jsrsasign-latest-all-min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/json-sans-eval-min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="jws-3.2.js"></script>
+
+</head>
+
+
+<body class="nav-md" onload="initSDK()">
+
+    <div class="container body">
+
+
+        <div class="main_container">
+
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="#" class="site_title"><i class="fa fa-paw"></i> <span>Nexus SDK TestClient</span></a>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- menu prile quick info -->
+                    <div class="profile">
+                        <div class="profile_pic">
+                            <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                        </div>
+                        <div class="profile_info">
+                            <span>Welcome,</span>
+                            <h2>Nexus QA</h2>
+                        </div>
+                    </div>
+                    <!-- /menu prile quick info -->
+
+                    <br />
+
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+
+                        <div class="menu_section">
+                            <h3>General</h3>
+                            <ul class="nav side-menu">
+                                <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display: none">
+                                        <li><a href="index.html">Rest Test Settings</a>
+                                        </li>
+                                        <li><a href="https://github.com/support-dot-com/support-dot-com.github.io/blob/v37/nexusconnectsdkjavascript.md" target="_blank">Read API Documentation</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+
+                    </div>
+                    <!-- /sidebar menu -->
+                    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content" style="width:330px">
+
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="NexusConnectSDK.exitHelp()"><span aria-hidden="true">×</span>
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel2">Nexus Assistant</h4>
+                                </div>
+                                <div class="modal-body" id="nxlive" style="height: 300px; width:100%">
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="NexusConnectSDK.exitHelp()">Close</button>
+                                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /menu footer buttons -->
+                    <div class="sidebar-footer hidden-small">
+                        <a data-toggle="tooltip" data-placement="top" title="Settings">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                            <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Lock">
+                            <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Logout">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <!-- /menu footer buttons -->
+                </div>
+            </div>
+
+            <!-- top navigation -->
+            <div class="top_nav">
+
+                <div class="nav_menu">
+                    <nav class="" role="navigation">
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="" class="user-profile" data-toggle="modal" aria-expanded="false" data-target=".bs-example-modal-sm">
+                                    <i class="fa fa-comments-o" onclick="initateAssistedHelp()">Assist</i>
+                                </a>
+
+                            </li>
+                            <li class="">
+                                <a href="" class="user-profile" data-toggle="modal" aria-expanded="false" data-target=".bs-example-modal-sm">
+                                    <i class="fa fa-newspaper-o" onclick="showContext()">Context</i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+            <!-- /top navigation -->
+
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>Self Help Container</h3>
+                        </div>
+
+                        <div class="title_right">
+                            <div class="col-md-3 col-sm-5 col-xs-12 form-group pull-right top_search">
+                                <div class="input-group">
+                                    <input type="text"  id="helpid" class="form-control" placeholder="Search HelpId...">
+                                    <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" onclick="getHelpById(document.getElementById('helpid').value)">Go!</button>
+                        </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-5 col-xs-12 form-group pull-right top_search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search Tags.." id="tags">
+                                    <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" onclick="getHelpByTags(document.getElementById('tags').value.split(','))">Go!</button>
+                            </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-5 col-xs-12 form-group pull-right top_search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search anything.." id="text">
+                                    <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" onclick="searchHelp(document.getElementById('text').value.split(' '))">Go!</button>
+                            </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row" id="livehelp"></div>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Test Settings <small>Customer Identity</small></h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <br /> <br />
+                                    <form class="form-horizontal form-label-left input_mask">
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                            <input type="text" class="form-control has-feedback-left" id="txtFname" placeholder="First Name">
+                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                        </div>
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                            <input type="text" class="form-control" id="txtLname" placeholder="Last Name">
+                                            <span class="fa fa-user form-control-feedback right" aria-hidden="true"></span>
+                                        </div>
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                            <input type="text" class="form-control has-feedback-left" id="txtEmail" placeholder="Email">
+                                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                                        </div>
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                            <input type="text" class="form-control" id="txtPhone" placeholder="Phone">
+                                            <span class="fa fa-phone form-control-feedback right" aria-hidden="true"></span>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                            <input type="text" class="form-control" id="txtExternalId" placeholder="External Id">
+                                            <span class="fa fa-paw form-control-feedback right" aria-hidden="true"></span>
+                                        </div>
+                                        <!--<div class="form-group">-->
+                                            <!--<label class="control-label col-md-3 col-sm-3 col-xs-12">External Id</label>-->
+                                            <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
+                                                <!--<input type="text" class="form-control" placeholder="External Id">-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="checkbox">-->
+                                            <!--<label>-->
+                                                <!--<input type="checkbox" class="flat" checked="checked"> Preserve Context-->
+                                            <!--</label>-->
+                                        <!--</div>-->
+                                        <!--<div class="ln_solid"></div>-->
+                                        <div class="form-group">
+                                            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                <button type="button" class="btn btn-success pull-right" onclick="resetIdentity()">Submit</button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Other Settings <small></small></h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <br /> <br />
+                                    <form class="form-horizontal form-label-left input_mask">
+                                        <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
+                                            <label class="control-label" id="server"></label>
+                                        </div>
+                                        <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
+                                        <textarea id="jwtarea" class="resizable_textarea form-control" style="width: 100%; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 74px;" data-autosize-on="true" placeholder="Enter your own JWT if you need to...[Default: mycompany - production JWT is used]"></textarea>
+                                        </div>
+
+                                            <label>
+                                                <input type="checkbox" class="flat" checked="checked" id="chkPreserveContext"> Preserve Context
+                                            </label>
+
+                                        <div class="form-group">
+                                            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                <button type="button" class="btn btn-success pull-right" onclick="initSDK()">Submit</button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="height: 900px">
+                            <div class="x_panel" style="height:800px;">
+                                <div class="x_title">
+                                    <h2>Help Container</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="#">Settings 1</a>
+                                                </li>
+                                                <li><a href="#">Settings 2</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                        <br /> <br />
+                                    <div class="clearfix" id="helpContainer" style="height: 600px;"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- Test Settings -->
+
+
+
+
+                <!-- Test Settings Ends here -->
+                <footer>
+                    <div class="">
+                        <p class="pull-right">Thanks to <a>Kimlabs</a>. for this wonderful template|
+                            <span class="lead"> <i class="fa fa-paw"></i> Nexus SDK</span>
+                        </p>
+                    </div>
+                    <div class="clearfix"></div>
+                </footer>
+                <!-- /footer content -->
+
+            </div>
+            <!-- /page content -->
+        </div>
+
+    </div>
+
+    <div id="custom_notifications" class="custom-notifications dsp_none">
+        <ul class="list-unstyled notifications clearfix" data-tabbed_notifications="notif-group">
+        </ul>
+        <div class="clearfix"></div>
+        <div id="notif-group" class="tabbed_notifications"></div>
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- chart js -->
+    <script src="js/chartjs/chart.min.js"></script>
+    <!-- bootstrap progress js -->
+    <script src="js/progressbar/bootstrap-progressbar.min.js"></script>
+    <script src="js/nicescroll/jquery.nicescroll.min.js"></script>
+    <!-- icheck -->
+    <script src="js/icheck/icheck.min.js"></script>
+
+    <script src="js/custom.js"></script>
+
+    <!-- moris js -->
+    <script src="js/moris/raphael-min.js"></script>
+    <script src="js/moris/morris.js"></script>
+    <script src="js/moris/example.js"></script>
+
+    <!-- Sctipts for SDK -->
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <!--<script type="text/javascript" src="https://static.nexus.support.com/client/v1/nexus-connect-sdk.js"></script>-->
+
+    <!-- PNotify -->
+    <script type="text/javascript" src="js/notify/pnotify.core.js"></script>
+    <script type="text/javascript" src="js/notify/pnotify.buttons.js"></script>
+    <script type="text/javascript" src="js/notify/pnotify.nonblock.js"></script>
+
+    <script>
+        function initSDK(){
+
+            console.log("clearing local storage");
+            localStorage.clear();
+            var txtJWT = document.getElementById('jwtarea').value;
+            var defaultJWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0IjoibXljb21wYW55IiwiZCI6Im5leHVzLnN1cHBvcnQuY29tIiwicHJtIjpbImxvZzoqIiwic2Vzc2lvbjpjb25uZWN0Il0sImp0aSI6IjQzY2JmNWEyLWQ1ZjAtNDcwNC1iOTE3LWQzYTM2YmE1YjhkMCIsImFwcCI6IlBpIiwidmVyIjoiUGkiLCJwbHQiOiJSYWJQaSIsImlhdCI6MTQ0MDQ1ODQ4NywiYXVkIjpbImFwcCIsImFwaSJdLCJpc3MiOiJTdXBwb3J0LmNvbSJ9.4djguCZWXkXibo1aWrHAScjKBWiv2br1S_OQSrDxC1g';
+            jwt = txtJWT||defaultJWT;
+            var parsedJWT;
+            var tenant="";
+            var jws = new KJUR.jws.JWS();
+            try{
+                var result  = jws.parseJWS(jwt);
+                parsedJWT = JSON.parse(jws.parsedJWS.payloadS);
+            }catch(ex){
+
+                console.error(ex);
+            }finally{
+
+                var myURL = parsedJWT.d;
+                tenant = parsedJWT.t;
+
+            }
+                url = 'https://static.' + myURL +  '/client/v1/nexus-connect-sdk.js';
+                //alert(url);
+            try{
+                $.getScript(url, function(data, textStatus, jqxhr) {
+
+                    if(jqxhr.status != 200){
+
+                        new PNotify({
+                            title: 'Nexus SDK',
+                            text: 'Sorry! SDK Failed to Load from Given URL',
+                            type: 'error',
+                            nonblock: {
+                                nonblock: true,
+                                nonblock_opacity: .2
+                            }
+                        });
+                        return;
+                    }
+                    else
+                    {
+                        console.log("SDK Loaded from " + url);
+                        document.getElementById('server').innerHTML = 'URL: ' + tenant +'.'+ myURL;
+                        NexusConnectSDK.initialize(jwt);
+                        var preserveContext = document.getElementById('chkPreserveContext').checked;
+                        console.log("Is context preserved?" + preserveContext);
+                        NexusConnectSDK.preserveContext(preserveContext);
+                        if(!preserveContext){
+                            NexusConnectSDK.logAction('Context Preserve turned off');
+                        }
+                        else{
+                            NexusConnectSDK.logAction('Context Preserve turned On');
+                        }
+                        var fname = 'SDKTestFname' + Math.floor(Math.random()*10000);
+                        var lname = 'SDKTestLname' + Math.floor(Math.random()*10000);
+                        var email = 'sdktest@' + Math.floor*(Math.random()*10000) + '.com';
+                        var phone = Math.floor(Math.random()*10000000000);
+                        var externalId = Math.floor((Math.random() * 10000));
+
+                        NexusConnectSDK.setEmail(email).setFirstName(fname).setLastName(lname).setPhone(phone).setExternalId(externalId);
+                        var identity = JSON.stringify(JSON.parse(localStorage.getItem('nexus-connect-data')).context.identity);
+                        console.log("Customer Data" + identity);
+                        NexusConnectSDK.logContent("Customer Identity",identity);
+
+                    }
+
+                });
+
+            }catch(ex){
+                new PNotify({
+                    title: 'Nexus SDK',
+                    text: 'Sorry! SDK Failed to Load from Given URL. Reason: ' + ex,
+                    type: 'error',
+                    nonblock: {
+                        nonblock: true,
+                        nonblock_opacity: .2
+                    }
+                });
+            }
+
+
+
+        }
+
+    </script>
+    <script>
+        function showContext(){
+
+            var localData = JSON.parse(localStorage.getItem('nexus-connect-data'));
+            var helpmeId = document.getElementById('nxlive');
+            helpmeId.innerHTML = (JSON.stringify(localData.context.log));
+        }
+
+    </script>
+    <script>
+        function initateAssistedHelp()
+        {
+            var element = document.getElementById('nxlive');
+            try{
+
+                var isHelpActive = NexusConnectSDK.isLiveHelpActive(element);
+
+
+            }catch(ex){
+                console.error(ex);
+            }
+            finally{
+                if(!isHelpActive){
+                    NexusConnectSDK.showLiveHelp(document.getElementById('nxlive'),{'phone':'(408)-830-7906', 'skill':'Sales'});
+                    NexusConnectSDK.logAction("Customer Opted for Assisted Help");
+                    NexusConnectSDK.logDevice("Connected Device", "Website");
+                }
+                else{
+                    NexusConnectSDK.logAction("Customer Opted for Assisted Help - But Was already active");
+                }
+            }
+
+        }
+    </script>
+    <script>
+        function getHelpById(helpid)
+        {
+
+            var helpmeId = document.getElementById('helpContainer');
+            NexusConnectSDK.showSelfHelpForId(helpid,helpmeId);
+
+
+
+        }
+
+    </script>
+    <script>
+        function getHelpByTags(tags)
+        {
+
+            var helpmeId = document.getElementById('helpContainer');
+            NexusConnectSDK.showSelfHelpForTags(tags,helpmeId);
+
+        }
+
+    </script>
+    <script type="application/javascript">
+        function searchHelp(text){
+            var helpmeId = document.getElementById('helpContainer');
+            NexusConnectSDK.showSelfHelpForSearch(text,helpmeId);
+
+        }
+
+    </script>
+    <script>
+        function resetIdentity(){
+            var fname = document.getElementById('txtFname');
+            var lname = document.getElementById('txtLname');
+            var email = document.getElementById('txtEmail');
+            var phone = document.getElementById('txtPhone');
+            var externalId = document.getElementById('txtExternalId');
+
+            /* Clear the existing Identity and set the new Identity for subsequent calls?" */
+            NexusConnectSDK.clearIdentity();
+            NexusConnectSDK
+                    .setFirstName(fname)
+                    .setLastName(lname)
+                    .setEmail(email)
+                    .setPhone(phone)
+                    .setExternalId(externalId);
+
+            new PNotify({
+                title: 'Nexus SDK',
+                text: 'Customer Information is updated.',
+                type: 'success',
+                nonblock: {
+                    nonblock: true,
+                    nonblock_opacity: .2
+                }
+            });
+
+
+        }
+
+    </script>
+
+
+
+</body>
+
+</html>
