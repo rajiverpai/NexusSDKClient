@@ -142,8 +142,8 @@
 
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
-                                <a href="" class="user-profile" data-toggle="modal" aria-expanded="false" data-target=".bs-example-modal-sm">
-                                    <i class="fa fa-comments-o" onclick="initateAssistedHelp()">Assist</i>
+                                <a href="" class="user-profile" aria-expanded="false">
+                                    <i class="fa fa-comments-o" onclick="initateAssistedHelp(); return false;">Assist</i>
                                 </a>
 
                             </li>
@@ -482,9 +482,10 @@
         function initateAssistedHelp()
         {
             var element = document.getElementById('nxlive');
+            var isHelpActive = false;
             try{
 
-                var isHelpActive = NexusConnectSDK.isLiveHelpActive(element);
+                isHelpActive = NexusConnectSDK.isLiveHelpActive(null);
 
 
             }catch(ex){
@@ -495,15 +496,24 @@
 
                     var helpPanel = document.getElementById('nxlive');
                     helpPanel.innerHTML = "";
-                    NexusConnectSDK.showLiveHelp(helpPanel,{'phone':'(408)-830-7906', 'skill':'Sales'});
-                    NexusConnectSDK.showLiveHelp(document.getElementById('nxlive'),{'phone':'(408)-830-7906', 'skill':'Sales'});
-                    NexusConnectSDK.logAction("Customer Opted for Assisted Help");
-                    NexusConnectSDK.logDevice("Connected Device", "Website");
+                    //NexusConnectSDK.showLiveHelp(helpPanel,{'phone':'(408)-830-7906', 'skill':'Sales'});
+                    var p = NexusConnectSDK.showLiveHelp(null,{'phone':'(408)-830-7906', 'skill':'Sales'});
+                    p.then(function(success){
+                                debugger;
+                                console.log("launched Help Successfully");
+                                NexusConnectSDK.logAction("Customer Opted for Assisted Help");
+                                NexusConnectSDK.logDevice("Connected Device", "Website");
+
+                            },function(err){
+                                debugger;
+                                console.log("Error" + err);
+                            });
                 }
                 else{
                     NexusConnectSDK.logAction("Customer Opted for Assisted Help - But Was already active");
                 }
             }
+            return false;
 
         }
     </script>
