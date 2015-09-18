@@ -84,6 +84,9 @@
                                         </li>
                                         <li><a href="https://github.com/support-dot-com/support-dot-com.github.io/blob/v37/nexusconnectsdkjavascript.md" target="_blank">Read API Documentation</a>
                                         </li>
+                                        <li>
+                                            <a href="support.html">Finance Report</a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
@@ -390,6 +393,7 @@
             var txtJWT = document.getElementById('jwtarea').value;
             var defaultJWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0IjoibXljb21wYW55IiwiZCI6Im5leHVzLnN1cHBvcnQuY29tIiwicHJtIjpbImxvZzoqIiwic2Vzc2lvbjpjb25uZWN0Il0sImp0aSI6IjQzY2JmNWEyLWQ1ZjAtNDcwNC1iOTE3LWQzYTM2YmE1YjhkMCIsImFwcCI6IlBpIiwidmVyIjoiUGkiLCJwbHQiOiJSYWJQaSIsImlhdCI6MTQ0MDQ1ODQ4NywiYXVkIjpbImFwcCIsImFwaSJdLCJpc3MiOiJTdXBwb3J0LmNvbSJ9.4djguCZWXkXibo1aWrHAScjKBWiv2br1S_OQSrDxC1g';
             jwt = txtJWT||defaultJWT;
+            localStorage.setItem('jwt',jwt);
             var parsedJWT;
             var tenant="";
             var jws = new KJUR.jws.JWS();
@@ -496,8 +500,10 @@
 
                     var helpPanel = document.getElementById('nxlive');
                     helpPanel.innerHTML = "";
+                    var helpmeId = document.getElementById('helpContainer');
+                    helpmeId.innerHTML = "";
                     //NexusConnectSDK.showLiveHelp(helpPanel,{'phone':'(408)-830-7906', 'skill':'Sales'});
-                    var p = NexusConnectSDK.showLiveHelp(null,{'phone':'(408)-830-7906', 'skill':'Sales'});
+                    var p = NexusConnectSDK.showLiveHelp(helpmeId,{'phone':'(408)-830-7906', 'skill':'Sales'});
                     p.then(function(success){
                                 debugger;
                                 console.log("launched Help Successfully");
