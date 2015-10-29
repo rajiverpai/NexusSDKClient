@@ -435,11 +435,11 @@
                         var preserveContext = document.getElementById('chkPreserveContext').checked;
                         console.log("Is context preserved?" + preserveContext);
                         NexusConnectSDK.preserveContext(preserveContext);
-                        if(!preserveContext){
-                            NexusConnectSDK.logAction('Context Preserve turned off');
-                        }
-                        else{
-                            NexusConnectSDK.logAction('Context Preserve turned On');
+                       if(!preserveContext){
+                          NexusConnectSDK.logAction('Context Preserve turned off');
+                       }
+                       else{
+                           NexusConnectSDK.logAction('Context Preserve turned On');
                         }
                         var fname = 'SDKTestFname' + Math.floor(Math.random()*10000);
                         var lname = 'SDKTestLname' + Math.floor(Math.random()*10000);
@@ -447,7 +447,7 @@
                         var phone = Math.floor(Math.random()*10000000000);
                         var externalId = Math.floor((Math.random() * 10000));
 
-                        NexusConnectSDK.setEmail(email).setFirstName(fname).setLastName(lname).setPhone(phone).setExternalId(externalId);
+                        //NexusConnectSDK.setEmail(email).setFirstName(fname).setLastName(lname).setPhone(phone).setExternalId(externalId);
                         var identity = JSON.stringify(JSON.parse(localStorage.getItem('nexus-connect-data')).context.identity);
                         console.log("Customer Data" + identity);
                         NexusConnectSDK.logContent("Customer Identity",identity);
@@ -489,7 +489,7 @@
             var isHelpActive = false;
             try{
 
-                isHelpActive = NexusConnectSDK.isLiveHelpActive(null);
+                //isHelpActive = NexusConnectSDK.isLiveHelpActive(null);
 
 
             }catch(ex){
@@ -499,27 +499,25 @@
                 if(!isHelpActive){
 
                     var helpPanel = document.getElementById('nxlive');
-                    helpPanel.innerHTML = "";
-                    var helpmeId = document.getElementById('helpContainer');
-                    helpmeId.innerHTML = "";
                     //NexusConnectSDK.showLiveHelp(helpPanel,{'phone':'(408)-830-7906', 'skill':'Sales'});
-                    var p = NexusConnectSDK.showLiveHelp(helpmeId,{'phone':'(408)-830-7906', 'skill':'Sales'});
-                    p.then(function(success){
-                                debugger;
+                    var p = NexusConnectSDK.showLiveHelp(null,{mode: "",
+                        phone:"1-800-GETHELP",
+                        skill: "sales",
+                        remoteConnectionType: "cobrowse"});
+                    p.then(function(){
                                 console.log("launched Help Successfully");
                                 NexusConnectSDK.logAction("Customer Opted for Assisted Help");
                                 NexusConnectSDK.logDevice("Connected Device", "Website");
 
                             },function(err){
-                                debugger;
-                                console.log("Error" + err);
+                                       console.log("Error" + err);
                             });
                 }
                 else{
                     NexusConnectSDK.logAction("Customer Opted for Assisted Help - But Was already active");
                 }
             }
-            return false;
+           // return false;
 
         }
     </script>
